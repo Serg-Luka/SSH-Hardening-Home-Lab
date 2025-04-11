@@ -52,7 +52,7 @@ All IP addresses in this lab have been masked for security and privacy purposes.
 
 <pre><code class="language-bash">ping -c 4 8.8.8.8</code></pre>
 
-<img src="https://i.imgur.com/zQ0TlbG.png" alt="None" width="600">
+<img src="https://i.imgur.com/zQ0TlbG.png">
 
 ### ✍🏻 Step 1 Summary:
 
@@ -62,7 +62,7 @@ In Step 1, a Kali Linux VM was started, and the system was updated using `sudo a
 
 <h3>I installed the OpenSSH server & made sure that it was running:</h3>
 
-<img src="https://i.imgur.com/YOnze2l.png" alt="None" width="600">
+<img src="https://i.imgur.com/YOnze2l.png">
 
 <p>I installed the SSH server:</p>
 <pre><code class="language-bash">sudo apt install openssh-server -y</code></pre>
@@ -79,8 +79,8 @@ In Step 1, a Kali Linux VM was started, and the system was updated using `sudo a
 
 <pre><code class="language-bash">sudo nano /etc/ssh/sshd_config</code></pre>
 
-<img src="https://i.imgur.com/1mHw47S.png" alt="None" width="600">
-<img src="https://i.imgur.com/2BLzTlJ.png" alt="None" width="600">
+<img src="https://i.imgur.com/1mHw47S.png">
+<img src="https://i.imgur.com/2BLzTlJ.png">
 
 I changed **Port 22** to **Port 5822** and set <code>PermitRootLogin no</code> for security. I saved, exited, and restarted SSH:
 
@@ -99,7 +99,7 @@ I changed **Port 22** to **Port 5822** and set <code>PermitRootLogin no</code> f
 
 <h3>I verified SSH listens on port 5822:</h3>
 
-<img src="https://i.imgur.com/fMjQgcY.png" alt="None" width="600">
+<img src="https://i.imgur.com/fMjQgcY.png">
 
 <p>The screenshot above shows the <code>sudo netstat -tuln | grep 5822</code> output, confirming my SSH server on the Kali Linux VM listens on port 5822. This verifies the custom port configuration for my SSH’s security.</p>
 
@@ -116,7 +116,7 @@ In Step 2, an SSH server was installed on the Kali Linux VM using `sudo apt inst
 
 <h1>Step 3: Securing My SSH with UFW (Uncomplicated Firewall)</h1>
 
-<img src="https://i.imgur.com/REu1Jl7.png" alt="None" width="600">
+<img src="https://i.imgur.com/REu1Jl7.png">
 
 <p>This screenshot presents the <code>sudo ufw status</code> output, showing UFW configured to allow SSH traffic only on port 5822. This step restricts network access, enhancing my Kali Linux VM’s security for the SSH.</p>
 
@@ -143,7 +143,7 @@ In Step 3, the Uncomplicated Firewall (UFW) was installed on the Kali Linux VM u
 
 <h1>Step 4: Protecting My SSH with Fail2Ban</h1>
 
-<img src="https://i.imgur.com/V70PV9m.png" alt="None" width="600">
+<img src="https://i.imgur.com/V70PV9m.png">
 
 <p>I installed Fail2Ban:</p>
 <pre><code class="language-bash">sudo apt install fail2ban -y</code></pre>
@@ -168,7 +168,7 @@ In Step 3, the Uncomplicated Firewall (UFW) was installed on the Kali Linux VM u
 
 <pre><code class="language-bash">sudo nano /etc/fail2ban/jail.local</code></pre>
 
-<img src="https://i.imgur.com/jNUjOD4.png" alt="None" width="600">
+<img src="https://i.imgur.com/jNUjOD4.png">
 
 **Added the following rules:**
 
@@ -221,7 +221,7 @@ This is a stricter rule for persistent attackers. <br></p>
 
 <h3>Created a dedicated log file for Fail2Ban:</h3>
 
-<img src="https://i.imgur.com/DznABVL.png" alt="None" width="600">
+<img src="https://i.imgur.com/DznABVL.png">
 
 <p>Log files will be saved to <code>/var/log/fail2ban.log</code></p>
 
@@ -229,7 +229,7 @@ This is a stricter rule for persistent attackers. <br></p>
 
 <p>To do this I will first create the Fail2Ban log file and edit its permissions:</p>
 
-<img src="https://i.imgur.com/UUd5mBX.png" alt="None" width="600">
+<img src="https://i.imgur.com/UUd5mBX.png">
 
 <p>The following commands create a dedicated Fail2Ban log file, set its ownership to root:root, and adjust the file permissions to ensure it is readable and writable by the Fail2Ban service. This setup ensures proper logging for Fail2Ban while maintaining security.</p>
 
@@ -241,11 +241,11 @@ This is a stricter rule for persistent attackers. <br></p>
 
 <p>And finally, I will restart Fail2Ban to apply the above changes: <code>sudo systemctl restart fail2ban</code></p>
 
-<img src="https://i.imgur.com/2hKTYVu.png" alt="None" width="600">
+<img src="https://i.imgur.com/2hKTYVu.png">
 
 <p>After restarting, I enabled Fail2Ban and checked its status to ensure everything was running correctly, following the updates to the configuration files with the new rules and log path.</p>
 
-<img src="https://i.imgur.com/bpMs7P7.png" alt="None" width="600">
+<img src="https://i.imgur.com/bpMs7P7.png">
 
 <p>This screenshot displays the <code>sudo fail2ban-client status sshd</code> output, confirming the Fail2Ban SSH jail is active and monitoring port 5822. This protects my SSH server against unauthorised access in my lab.</p>
 
@@ -257,14 +257,14 @@ This is a stricter rule for persistent attackers. <br></p>
 
 <p>After typing the wrong password 3 times, I ran <code>sudo fail2ban-client status sshd</code> on the Kali VM to see if the ban has been registered.</p>
 
-<img src="https://i.imgur.com/trFS77r.png" alt="None" width="600">
+<img src="https://i.imgur.com/trFS77r.png">
 
 <p>(Attempting to log in as the ‘kali’ user since 'root' SSH login was disabled earlier during SSH server configuration.)</p>
 
 <p>Running the following command to inspect Fail2Ban logs:</p>
 <pre><code class="language-bash">sudo cat /var/log/fail2ban.log | grep "Ban"</code></pre>
 
-<img src="https://i.imgur.com/eZ4yKHP.png" alt="None" width="600">
+<img src="https://i.imgur.com/eZ4yKHP.png">
 
 <p>This screenshot captures <code>/var/log/fail2ban.log</code>, showing an IP ban after multiple failed SSH attempts on port 5822. This proves my Fail2Ban configuration prevents brute-force attacks in my lab.</p>
 
@@ -275,7 +275,7 @@ In Step 4, Fail2Ban was installed (`sudo apt install fail2ban -y`) to safeguard 
 
 <h1>Step 5: Switching to Key-Based Authentication</h1>
 
-<img src="https://i.imgur.com/LFZ3uml.png" alt="None" width="600">
+<img src="https://i.imgur.com/LFZ3uml.png">
 
 <p>I generated an SSH key pair on my Windows 10 machine using Git Bash:</p>
 <pre><code class="language-bash">ssh-keygen -t rsa -b 4096 -f /c/Users/newuser/.ssh/id_rsa</code></pre>
@@ -287,20 +287,20 @@ In Step 4, Fail2Ban was installed (`sudo apt install fail2ban -y`) to safeguard 
 
 <p>I accepted the default location (<code>~/.ssh/id_rsa</code>) and left the passphrase empty. I copied the public key to my Kali VM using ssh-copy-id:</p>
 
-<img src="https://i.imgur.com/vgZMQ0g.png" alt="None" width="600">
+<img src="https://i.imgur.com/vgZMQ0g.png">
 
 <p>By using the <code>ssh-copy-id</code> command, I copied the public key to the <code>~/.ssh/authorized_keys</code> file on the Kali VM, enabling key-based authentication for secure, passwordless login.</p>
 
-<img src="https://i.imgur.com/sCTY61j.png" alt="None" width="600">
+<img src="https://i.imgur.com/sCTY61j.png">
 
 <p>The screenshot above verifies that the key has been copied successfully to my Kali VM.</p>
 
-<img src="https://i.imgur.com/hw80bfR.png" alt="None" width="600">
-<img src="https://i.imgur.com/TwsILVX.png" alt="None" width="600">
+<img src="https://i.imgur.com/hw80bfR.png">
+<img src="https://i.imgur.com/TwsILVX.png">
 
 <p>Inside the SSH config file, I set <code>PasswordAuthentication no</code> and <code>PubkeyAuthentication yes</code>, saved, and restarted SSH. This disables password logins and enables key-based auth, enhancing my SSH’s security.</p>
 
-<img src="https://i.imgur.com/0m5bR5p.png" alt="None" width="600">
+<img src="https://i.imgur.com/0m5bR5p.png">
 
 <p>I tested the connection from my local Windows using the <code>ssh -i ~/.ssh/id_rsa -p 5822 kali@KALI_IP</code> command. It successfully logged me into the Kali machine.</p>
 
@@ -333,30 +333,30 @@ In Step 5, an SSH key pair was generated on a Windows 10 machine using `ssh-keyg
 <p>Tailscale strengthens SSH security by setting up a private VPN network with WireGuard encryption. This removes the need for public-facing SSH ports, restricting access to devices within the Tailscale network. By encrypting all traffic and reducing the attack surface, it makes unauthorised access far more difficult. Plus, its fine-grained access controls ensure that only approved devices can connect, making remote access both simpler and more secure.</p>
 
 <p>I installed Tailscale on my Kali VM, started the service, and authenticated it.</p>
-<img src="https://i.imgur.com/ps1xA5q.png" alt="None" width="600">
+<img src="https://i.imgur.com/ps1xA5q.png">
 
 <p>I followed the browser link provided, signed up for a free Tailscale account, and authorised my Kali VM.<p>
-<img src="https://i.imgur.com/lJNWFN5.png" alt="None" width="600">
+<img src="https://i.imgur.com/lJNWFN5.png">
 
 <p> Afterward, I checked the assigned Tailscale IP.</p>
-<img src="https://i.imgur.com/hEzD79y.png" alt="None" width="600">
-<img src="https://i.imgur.com/hXT7VCk.png" alt="None" width="600">
+<img src="https://i.imgur.com/hEzD79y.png">
+<img src="https://i.imgur.com/hXT7VCk.png">
 
 <p>On my Windows 10 machine, I downloaded and installed Tailscale from <a href="https://tailscale.com/download">tailscale.com/download</a>, signed in with the same account, and authorised the device.</p>
-<img src="https://i.imgur.com/yYl3Huz.png" alt="None" width="600">
+<img src="https://i.imgur.com/yYl3Huz.png">
 
 <p>I tested the network connectivity between my Kali Linux machine and my local Windows system, "desktop-ed7nukg," using Tailscale. By running the ping command from Kali's terminal to the device's hostname, I successfully verified that the two devices could communicate over the secure Tailscale network, confirming the connection was working properly.</p>
-<img src="https://i.imgur.com/6tMu7KD.png" alt="None" width="600">
+<img src="https://i.imgur.com/6tMu7KD.png">
 
 <p>Next, I connected to my Kali SSH server from my Windows 10 machine using the Kali VM’s Tailscale IP address (instead of its local IP from <code>ip a</code>). This demonstrated that SSH access works seamlessly within the Tailscale network.</p>
 
 <p>To further test the setup, I created an Ubuntu VM as an additional client. I copied the SSH private key (<code>id_rsa</code>) generated earlier to this machine to enable SSH authentication. However, I intentionally did <em>not</em> add this Ubuntu VM to the Tailscale network. This test aimed to confirm that even with the correct SSH port and key, access would be denied without being connected to the Tailscale network.</p>
-<img src="https://i.imgur.com/tPPB2zT.png" alt="None" width="600">
+<img src="https://i.imgur.com/tPPB2zT.png">
 
 <p>I transferred the private SSH key (<code>id_rsa</code>) to the Ubuntu machine using the <code>scp</code> command. The key was placed in the <code>~/.ssh/</code> directory of the <code>ubuntu</code> user, and the transfer completed successfully. This simulated a scenario where an attacker obtains a valid private key and attempts to authenticate. Despite knowing the SSH port and possessing the key, the attacker could not connect because the Ubuntu machine lacked a Tailscale network route to the Kali VM.</p>
 
 <p>Finally, I tested the Tailscale configuration by attempting to SSH into the Kali VM from the Ubuntu machine (not on Tailscale) using the Kali VM’s Tailscale IP. The connection timed out, proving that only devices within the Tailscale network can access the Kali machine. This validates that Tailscale effectively blocks external connections, securing the system as intended.</p>
-<img src="https://i.imgur.com/YJiKkiU.png" alt="None" width="600">
+<img src="https://i.imgur.com/YJiKkiU.png">
 
 ### ✍🏻 Step 6 Summary:
 
